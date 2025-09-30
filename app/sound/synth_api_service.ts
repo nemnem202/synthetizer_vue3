@@ -154,6 +154,7 @@ export class SynthApi {
   }
 
   static playNote(note: noteDTO) {
+    console.log(note);
     SynthApi.writeToMidiQueue(1, note.value, note.velocity ?? 100);
   }
 

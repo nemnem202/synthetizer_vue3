@@ -35,38 +35,38 @@ const updateGain = async (value: number) => {
 const updatePan = async (value: number) => {
   const synth_api = await use_synth_api();
 
-  synth_api.update_sampler(props.config.id, OscKey.PAN, value);
+  synth_api.update_sampler(props.config.id, OscKey.PAN, ((value - 50) * 2) / 100);
 };
 
 const updateAttack = async (value: number) => {
   const synth_api = await use_synth_api();
 
-  synth_api.update_sampler(props.config.id, OscKey.ATTACK, value);
+  synth_api.update_sampler(props.config.id, OscKey.ATTACK, value * 100);
 };
 
 const updateDecay = async (value: number) => {
   const synth_api = await use_synth_api();
 
-  synth_api.update_sampler(props.config.id, OscKey.DECAY, value);
+  synth_api.update_sampler(props.config.id, OscKey.DECAY, value * 100);
 };
 
 const updateRelease = async (value: number) => {
   const synth_api = await use_synth_api();
-  synth_api.update_sampler(props.config.id, OscKey.RELEASE, value);
+  synth_api.update_sampler(props.config.id, OscKey.RELEASE, value * 100);
 };
 
 const updateSustain = async (value: number) => {
   const synth_api = await use_synth_api();
-  synth_api.update_sampler(props.config.id, OscKey.SUSTAIN, value);
+  synth_api.update_sampler(props.config.id, OscKey.SUSTAIN, value / 100);
 };
 
 const updateDelay = async (value: number) => {
   const synth_api = await use_synth_api();
-  synth_api.update_sampler(props.config.id, OscKey.DELAY, value);
+  synth_api.update_sampler(props.config.id, OscKey.DELAY, value * 100);
 };
 const updateShift = async (value: number) => {
   const synth_api = await use_synth_api();
-  synth_api.update_sampler(props.config.id, OscKey.PITCH, value);
+  synth_api.update_sampler(props.config.id, OscKey.PITCH, value - 50);
 };
 </script>
 

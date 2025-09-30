@@ -89,8 +89,8 @@ impl AudioProcessor {
                 mix.lock().unwrap().render(&mut mixed_l, &mut mixed_r);
             });
 
-            mixed_l *= 0.1;
-            mixed_r *= 0.1;
+            // mixed_l *= 0.1;
+            // mixed_r *= 0.1;
 
             // Réécrire dans le Vec
             raw_samples[i] = mixed_l;

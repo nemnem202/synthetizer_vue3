@@ -36,6 +36,10 @@ const update_gain = async (val: number) => {
 <style scoped>
 .filter_controls {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  padding: 10px;
 }
 </style>
