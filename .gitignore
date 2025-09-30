@@ -22,3 +22,8 @@ logs
 .env
 .env.*
 !.env.example
+
+app/sound/rust-synth/build/*
+app/sound/rust-synth/target/*
+app/sound/rust-sample-processor/build/*
+app/sound/rust-sample-processor/target/*

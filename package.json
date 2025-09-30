@@ -3,13 +3,20 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "dev": "concurrently \"npm run synth:watch\" \"nuxt dev\"",
+    "build": "npm run synth:build && nuxt build",
+    "synth:watch:rustSynth": "cd app/sound/rust-synth && cargo watch -w src -s \"wasm-pack build --target web --out-dir build --release\"",
+    "synth:watch:sampleProcessor": "cd app/sound/rust-sample-processor && cargo watch -w src -s \"wasm-pack build --target web --out-dir build --release\"",
+    "synth:watch:worklet": "tsc -p audioworklet.tsconfig.json --watch",
+    "synth:watch": "concurrently \"npm run synth:watch:rustSynth\" \"npm run synth:watch:sampleProcessor\" \"npm run synth:watch:worklet\"",
+    "synth:build:rustSynth": "cd app/sound/rust-synth && wasm-pack build --target web --out-dir build --release",
+    "synth:build:sampleProcessor": "cd app/sound/rust-sample-processor && wasm-pack build --target web --out-dir build --release",
+    "synth:build:worklet": "tsc -p audioworklet.tsconfig.json",
+    "synth:build": "npm run synth:build:rustSynth && npm run synth:build:sampleProcessor && npm run synth:build:worklet"
   },
   "dependencies": {
+    "@types/audioworklet": "^0.0.85",
+    "concurrently": "^9.2.1",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
