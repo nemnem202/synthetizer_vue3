@@ -26,11 +26,11 @@ const deletefx = async () => {
 // Tu pourras compléter chaque callback pour propager les changements
 const update_delay = async (val: number) => {
   const synth_api = await use_synth_api();
-  synth_api.edit_fx(props.id, EchoParams.DELAY, val);
+  synth_api.edit_fx(props.id, EchoParams.DELAY, val * 20);
 };
 const update_feedback = async (val: number) => {
   const synth_api = await use_synth_api();
-  synth_api.edit_fx(props.id, EchoParams.FEEDBACK, val);
+  synth_api.edit_fx(props.id, EchoParams.FEEDBACK, val / 100);
 };
 const update_r_delay_offset = async (val: number) => {
   const synth_api = await use_synth_api();
@@ -42,11 +42,11 @@ const update_l_delay_offset = async (val: number) => {
 };
 const update_dry = async (val: number) => {
   const synth_api = await use_synth_api();
-  synth_api.edit_fx(props.id, EchoParams.DRY, val);
+  synth_api.edit_fx(props.id, EchoParams.DRY, val / 100);
 };
 const update_wet = async (val: number) => {
   const synth_api = await use_synth_api();
-  synth_api.edit_fx(props.id, EchoParams.WET, val);
+  synth_api.edit_fx(props.id, EchoParams.WET, val / 100);
 };
 </script>
 

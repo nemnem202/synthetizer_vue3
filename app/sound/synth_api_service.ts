@@ -95,6 +95,7 @@ export class SynthApi {
   private static sample_processor_worker: Worker;
 
   constructor() {
+    console.log("[SYNTH API INIT]");
     SynthApi.soundEngine = AudioEngineOrchestrator.getInstance();
 
     SynthApi.midi_queue_buffer = new SharedArrayBuffer(MIDI_BUFFER_SIZE);
@@ -224,10 +225,10 @@ export class SynthApi {
   }
 
   public create_sampler() {
+    this.nmbr_of_samplers++;
     const id = this.nmbr_of_samplers;
 
     SynthApi.writeToOscQueue(0, id, 0, 0);
-    this.nmbr_of_samplers++;
     return id;
   }
 
@@ -339,14 +340,13 @@ export class SynthApi {
   }
 
   public async import_sample(
-    files: FileList | null,
+    file: File | null | undefined,
     hq: boolean,
     sampler_id: number
   ): Promise<SampleData[] | void> {
-    if (!files) return;
-    const file = files[0];
+    if (!file) return;
     if (file.type !== "audio/wav") {
-      console.log("invalid format");
+      console.log("invalid format for ", file.name);
       return;
     }
 

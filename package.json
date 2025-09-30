@@ -17,6 +17,7 @@
   "dependencies": {
     "@types/audioworklet": "^0.0.85",
     "concurrently": "^9.2.1",
+    "pinia": "^3.0.3",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {

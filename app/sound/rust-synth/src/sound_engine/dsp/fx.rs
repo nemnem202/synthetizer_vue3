@@ -1,5 +1,7 @@
 use std::any::Any;
 
+use web_sys::console;
+
 use crate::utils::{constants::SAMPLE_RATE, types::Mix};
 
 pub struct MemoryBuffer {
@@ -179,13 +181,21 @@ impl BiquadFilter {
             _ => BiquadCoeffs::calc_coeffs_for_bell(frequency, q, gain),
         };
 
+        console::log_1(
+            &format!(
+                "la valeur de q a t'elle changé ? {} nouvelle valeur: {}",
+                self.q != q,
+                q
+            )
+            .into(),
+        );
+
         self.frequency = frequency;
         self.q = q;
         self.filter_type = filter_type;
         self.gain = gain
     }
 }
-
 impl EffectTrait for BiquadFilter {
     fn id(&self) -> usize {
         self.id

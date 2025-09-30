@@ -14,13 +14,18 @@
         />
       </svg>
     </button>
+    <select name="loaded_samples" id="loaded_samples" @input="handleloadedinput">
+      <option v-for="s in loaded_samples" :value="s.sample_id">{{ s.title }}</option>
+    </select>
     <CanvasVue v-if="points" :curve="{ color: 'green', points: points }" />
     <div v-if="!points" class="placeholder">[No Sample loaded]</div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{ id: number }>();
+import type { SampleData } from "~/sound/synth_api_service";
+
+const props = defineProps<{ id: number; loaded_samples: SampleData[] }>();
 const file_input = ref<HTMLInputElement | null>(null);
 
 const points = ref<number[] | null>(null);
@@ -34,7 +39,8 @@ const handleinput = async (e: Event) => {
   const file = target.files[0];
   if (!file) return;
   const synth_api = await use_synth_api();
-  synth_api.import_sample(target.files, false, props.id);
+
+  synth_api.import_sample(target.files[0], false, props.id);
   const array_buffer = await file.arrayBuffer();
   const audio_ctx = new AudioContext();
   const audio_buffer = await audio_ctx.decodeAudioData(array_buffer);
@@ -48,6 +54,13 @@ const handleinput = async (e: Event) => {
   } else {
     points.value = []; // fallback si aucun canal
   }
+};
+
+const handleloadedinput = async (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const synth_api = await use_synth_api();
+
+  synth_api.set_existing_sample(parseInt(target.value), props.id);
 };
 
 const sincInterpolation = (arr: number[], targetLength = 5000): number[] => {
@@ -105,6 +118,15 @@ const sincInterpolation = (arr: number[], targetLength = 5000): number[] => {
 .import-btn {
   position: absolute;
   top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+#loaded_samples {
+  position: absolute;
+  top: 50px;
   left: 10px;
   width: 30px;
   height: 30px;

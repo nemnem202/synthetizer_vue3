@@ -1,7 +1,12 @@
 <template>
   <div class="synth-container">
     <div class="samplers-container">
-      <Sampler v-for="(sampler, index) in samplers" :key="sampler.id ?? index" :config="sampler" />
+      <Sampler
+        v-for="(sampler, index) in samplers"
+        :key="'sampler' + sampler.id"
+        :config="sampler"
+        :loaded-samples="props.loadedSamples"
+      />
       <default-button name="+" :callback="addSampler" />
     </div>
     <div class="mixer-container">
@@ -11,13 +16,13 @@
             v-if="is_echo(effect)"
             v-bind="effect"
             :on_delete="() => remove_fx(effect.id)"
-            :key="effect.id"
+            :key="'echo' + effect.id"
           />
           <Filter_mod
             v-else-if="is_filter(effect)"
             v-bind="effect"
             :on_delete="() => remove_fx(effect.id)"
-            :key="effect.id"
+            :key="'filt' + effect.id"
           />
         </div>
         <default-button name="+ Echo" :callback="addEcho" />
@@ -31,7 +36,7 @@
 import { default_echo_config } from "~/config/default_echo";
 import { default_filter_config } from "~/config/default_filter";
 import { default_sampler_config } from "~/config/default_sampler";
-import { Effects } from "~/sound/synth_api_service";
+import { Effects, type SampleData } from "~/sound/synth_api_service";
 import type { Sampler } from "~/types/sampler";
 import type { Filter } from "~/types/filter";
 import type { Echo } from "~/types/echo";
@@ -42,16 +47,23 @@ const samplers = ref<Sampler[]>([]);
 
 const fx = ref<(Echo | Filter)[]>([]);
 
+const props = defineProps<{ loadedSamples: SampleData[] }>();
+
 const remove_fx = (id: number) => {
   fx.value = fx.value.filter((e) => e.id !== id);
 };
 
+onMounted(async () => {
+  const midi = await useMidi();
+  midi();
+});
+
 const addSampler = async () => {
   const synth_api = await use_synth_api();
   const id = synth_api.create_sampler();
-  const config = default_sampler_config;
-  config.id = id;
+  const config = { ...default_sampler_config, id };
   samplers.value.push(config);
+  console.log("nouveau sampler avec la config ", config);
 };
 
 const addEcho = async () => {
