@@ -5,6 +5,7 @@ export const default_sampler_config: Sampler = {
   pan: 50,
   sample_id: 0,
   id: 0,
+  shift: 50,
   adsr: {
     attack: 10,
     decay: 10,

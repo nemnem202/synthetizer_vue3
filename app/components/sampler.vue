@@ -1,10 +1,11 @@
 <template>
   <div class="sampler-container">
-    <CanvasVue :curve="{ color: 'green', points: Array.from({ length: 5000 }, () => 0.5) }" />
+    <SamplerCanvasVue />
     <div class="controls-container">
       <div class="gain-pan-container">
         <InputKnob :value="props.config.gain" :callback="updateGain" label="Gain" />
         <InputKnob :value="props.config.pan" :callback="updatePan" label="Pan" />
+        <InputKnob :value="props.config.shift" :callback="updateShift" label="Shift" />
       </div>
 
       <div class="adsr-container">
@@ -52,6 +53,10 @@ const updateSustain = (value: number) => {
 const updateDelay = (value: number) => {
   console.log("delay updated:", value);
 };
+
+const updateShift = (value: number) => {
+  console.log("shift:", value);
+};
 </script>
 
 <style scoped>
@@ -59,8 +64,10 @@ const updateDelay = (value: number) => {
   display: flex;
   flex-direction: column;
   border: 2px solid white;
+  gap: 10px;
   max-width: 800px;
   padding: 10px;
+  width: 100%;
 }
 
 .controls-container {

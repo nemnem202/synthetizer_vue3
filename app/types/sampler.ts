@@ -12,4 +12,5 @@ export type Sampler = {
   adsr: Adsr;
   pan: number;
   gain: number;
+  shift: number;
 };

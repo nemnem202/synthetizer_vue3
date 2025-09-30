@@ -24,12 +24,17 @@ const ctx = ref<CanvasRenderingContext2D | null>(null);
 const canvas_width = ref(400);
 const canvas_height = ref(200);
 
-const world_width = props.curve.points.length;
+let world_width = props.curve.points.length;
+
+watchEffect(() => {
+  world_width = props.curve.points.length;
+  draw();
+});
 const world_height = 500;
 
 // === Camera / zoom ===
-let scale_x = 1;
-let scale_y = 1;
+let scale_x = canvas_width.value / world_width;
+let scale_y = canvas_height.value / world_height;
 let offset_x = 0;
 let offset_y = 0;
 const max_scale = 5;
@@ -66,11 +71,6 @@ function draw() {
   ctx.value.translate(offset_x, offset_y);
   ctx.value.scale(scale_x, scale_y);
 
-  // // contour monde
-  // ctx.value.strokeStyle = "white";
-  // ctx.value.lineWidth = 2 / Math.max(scale_x, scale_y);
-  // ctx.value.strokeRect(0, 0, world_width, world_height);
-
   // grille
   ctx.value.beginPath();
   ctx.value.strokeStyle = "white";
@@ -87,14 +87,19 @@ function draw() {
 
   ctx.value.beginPath();
   ctx.value.strokeStyle = props.curve.color;
-  ctx.value.lineWidth = 5 / scale_y;
+  ctx.value.lineWidth = 2 / scale_y;
 
   ctx.value.moveTo(0, props.curve.points[0] ? props.curve.points[0] * world_height : 0);
 
-  props.curve.points.forEach((p, i) => {
-    if (!ctx.value) return;
-    ctx.value.lineTo(i, p * world_height);
-  });
+  const start_idx = Math.max(0, Math.floor(-offset_x / scale_x));
+  const end_idx = Math.min(world_width, Math.ceil((canvas_width.value - offset_x) / scale_x));
+
+  const step = Math.max(1, Math.floor(1 / scale_x)); // plus scale_x est petit, plus step est grand
+  for (let i = start_idx; i < end_idx; i += step) {
+    const p = props.curve.points[i];
+    if (!p) continue;
+    ctx.value.lineTo(i, (p + 0.5) * world_height);
+  }
 
   ctx.value.stroke();
 }
@@ -160,5 +165,6 @@ onMounted(() => {
 <style scoped>
 .canvas-vue {
   background-color: black;
+  cursor: grabbing;
 }
 </style>

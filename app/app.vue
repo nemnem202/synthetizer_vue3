@@ -12,4 +12,8 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+* {
+  box-sizing: border-box;
+}
 </style>
