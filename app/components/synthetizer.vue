@@ -6,18 +6,31 @@
     </div>
     <div class="mixer-container">
       <div class="buttons-container">
+        <div v-for="(effect, index) in fx" :key="effect.id ?? index" class="effect-item">
+          <Echo_mod v-if="is_echo(effect)" v-bind="effect" />
+          <Filter_mod v-else-if="is_filter(effect)" v-bind="effect" />
+        </div>
         <default-button name="+ Echo" :callback="addEcho" />
-        <default-button name="+ Filter" :callback="addEcho" />
+        <default-button name="+ Filter" :callback="addFilter" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { default_echo_config } from "~/config/default_echo";
+import { default_filter_config } from "~/config/default_filter";
 import { default_sampler_config } from "~/config/default_sampler";
+import { Effects } from "~/sound/synth_api_service";
 import type { Sampler } from "~/types/sampler";
+import type { Filter } from "~/types/filter";
+import type { Echo } from "~/types/echo";
+import Echo_mod from "./echo_mod.vue";
+import Filter_mod from "./filter_mod.vue";
 
 const samplers = ref<Sampler[]>([]);
+
+const fx = ref<(Echo | Filter)[]>([]);
 
 const addSampler = async () => {
   const synth_api = await use_synth_api();
@@ -27,9 +40,29 @@ const addSampler = async () => {
   samplers.value.push(config);
 };
 
-const addEcho = () => {};
+const addEcho = async () => {
+  const synth_api = await use_synth_api();
+  const id = synth_api.add_fx(Effects.ECHO);
+  const config = default_echo_config;
+  config.id = id;
+  fx.value.push(config);
+};
 
-const addFilter = () => {};
+const addFilter = async () => {
+  const synth_api = await use_synth_api();
+  const id = synth_api.add_fx(Effects.FILTER);
+  const config = default_filter_config;
+  config.id = id;
+  fx.value.push(config);
+};
+
+const is_echo = (effect: Echo | Filter): effect is Echo => {
+  return (effect as Echo).delay !== undefined;
+};
+
+const is_filter = (effect: Echo | Filter): effect is Filter => {
+  return (effect as Filter).frequency !== undefined;
+};
 </script>
 
 <style scoped>

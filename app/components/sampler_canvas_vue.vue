@@ -14,7 +14,8 @@
         />
       </svg>
     </button>
-    <CanvasVue :curve="{ color: 'green', points: points }" />
+    <CanvasVue v-if="points" :curve="{ color: 'green', points: points }" />
+    <div v-if="!points" class="placeholder">[No Sample loaded]</div>
   </div>
 </template>
 
@@ -22,7 +23,7 @@
 const props = defineProps<{ id: number }>();
 const file_input = ref<HTMLInputElement | null>(null);
 
-const points = ref<number[]>(Array.from({ length: 5000 }, () => 0));
+const points = ref<number[] | null>(null);
 const open_file_dialog = () => {
   file_input.value?.click();
 };
@@ -91,6 +92,14 @@ const sincInterpolation = (arr: number[], targetLength = 5000): number[] => {
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  height: 300px;
 }
 
 .import-btn {
