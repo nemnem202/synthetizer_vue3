@@ -95,7 +95,7 @@ const is_filter = (effect: Echo | Filter): effect is Filter => {
 .synth-container {
   width: 1000px;
   justify-content: space-between;
-  border: 2px solid white;
+  border: 1px solid white;
 }
 .synth-container,
 .samplers-container,

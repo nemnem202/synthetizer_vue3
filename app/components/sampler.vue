@@ -75,7 +75,7 @@ const updateShift = async (value: number) => {
 .sampler-container {
   display: flex;
   flex-direction: column;
-  border: 2px solid white;
+  border: 1px solid white;
   gap: 10px;
   max-width: 800px;
   padding: 10px;

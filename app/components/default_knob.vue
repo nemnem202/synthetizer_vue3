@@ -7,7 +7,7 @@
     xmlns="http://www.w3.org/2000/svg"
     :style="{ transform: `rotate(${(modelValue / 100) * 300 - 30}deg)` }"
   >
-    <circle cx="167.5" cy="167.5" r="167" fill="#F1F1F1" stroke="url(#paint0_linear_2003_2)" />
+    <circle cx="167.5" cy="167.5" r="167" fill="black" stroke="black" />
     <g filter="url(#filter0_i_2003_2)">
       <circle cx="65" cy="226" r="15" fill="#FE621B" />
     </g>
@@ -49,7 +49,7 @@
         y2="299"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="white" />
+        <stop stop-color="#fe621b" />
         <stop offset="0.755" stop-color="#CBCBCB" />
       </linearGradient>
     </defs>

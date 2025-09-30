@@ -73,7 +73,7 @@ function draw() {
 
   // grille
   ctx.value.beginPath();
-  ctx.value.strokeStyle = "white";
+  ctx.value.strokeStyle = "#fe621b1b";
   ctx.value.lineWidth = 0.05;
   for (let i = 0; i <= world_width; i += 10) {
     ctx.value.moveTo(i, 0);

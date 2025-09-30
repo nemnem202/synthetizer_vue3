@@ -17,7 +17,7 @@
     <select name="loaded_samples" id="loaded_samples" @input="handleloadedinput">
       <option v-for="s in loaded_samples" :value="s.sample_id">{{ s.title }}</option>
     </select>
-    <CanvasVue v-if="points" :curve="{ color: 'green', points: points }" />
+    <CanvasVue v-if="points" :curve="{ color: '#fe621b', points: points }" />
     <div v-if="!points" class="placeholder">[No Sample loaded]</div>
   </div>
 </template>
