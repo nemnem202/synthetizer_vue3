@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "start": "nuxt start",
     "dev": "concurrently \"npm run synth:watch\" \"nuxt dev\"",
     "build": "npm run synth:build && nuxt build",
     "synth:watch:rustSynth": "cd app/sound/rust-synth && cargo watch -w src -s \"wasm-pack build --target web --out-dir build --release\"",
