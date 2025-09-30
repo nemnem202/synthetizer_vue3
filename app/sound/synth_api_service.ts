@@ -1,4 +1,4 @@
-import type { noteDTO } from "../types/note";
+import type { noteDTO } from "~/types/note";
 import { AudioEngineOrchestrator } from "./audio_engine_orchestrator";
 
 const MIDI_EVENT_SIZE = 4;
