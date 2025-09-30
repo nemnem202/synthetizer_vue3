@@ -20,42 +20,53 @@
 </template>
 
 <script setup lang="ts">
+import { OscKey } from "~/sound/synth_api_service";
 import type { Sampler } from "~/types/sampler";
 
 const props = defineProps<{
   config: Sampler;
 }>();
 
-const updateGain = (value: number) => {
-  console.log("gain updated:", value);
+const updateGain = async (value: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.update_sampler(props.config.id, OscKey.GAIN, value);
 };
 
-const updatePan = (value: number) => {
-  console.log("pan updated:", value);
+const updatePan = async (value: number) => {
+  const synth_api = await use_synth_api();
+
+  synth_api.update_sampler(props.config.id, OscKey.PAN, value);
 };
 
-const updateAttack = (value: number) => {
-  console.log("attack updated:", value);
+const updateAttack = async (value: number) => {
+  const synth_api = await use_synth_api();
+
+  synth_api.update_sampler(props.config.id, OscKey.ATTACK, value);
 };
 
-const updateDecay = (value: number) => {
-  console.log("decay updated:", value);
+const updateDecay = async (value: number) => {
+  const synth_api = await use_synth_api();
+
+  synth_api.update_sampler(props.config.id, OscKey.DECAY, value);
 };
 
-const updateRelease = (value: number) => {
-  console.log("release updated:", value);
+const updateRelease = async (value: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.update_sampler(props.config.id, OscKey.RELEASE, value);
 };
 
-const updateSustain = (value: number) => {
-  console.log("sustain updated:", value);
+const updateSustain = async (value: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.update_sampler(props.config.id, OscKey.SUSTAIN, value);
 };
 
-const updateDelay = (value: number) => {
-  console.log("delay updated:", value);
+const updateDelay = async (value: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.update_sampler(props.config.id, OscKey.DELAY, value);
 };
-
-const updateShift = (value: number) => {
-  console.log("shift:", value);
+const updateShift = async (value: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.update_sampler(props.config.id, OscKey.PITCH, value);
 };
 </script>
 

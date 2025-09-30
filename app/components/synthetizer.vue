@@ -7,8 +7,18 @@
     <div class="mixer-container">
       <div class="buttons-container">
         <div v-for="(effect, index) in fx" :key="effect.id ?? index" class="effect-item">
-          <Echo_mod v-if="is_echo(effect)" v-bind="effect" />
-          <Filter_mod v-else-if="is_filter(effect)" v-bind="effect" />
+          <Echo_mod
+            v-if="is_echo(effect)"
+            v-bind="effect"
+            :on_delete="() => remove_fx(effect.id)"
+            :key="effect.id"
+          />
+          <Filter_mod
+            v-else-if="is_filter(effect)"
+            v-bind="effect"
+            :on_delete="() => remove_fx(effect.id)"
+            :key="effect.id"
+          />
         </div>
         <default-button name="+ Echo" :callback="addEcho" />
         <default-button name="+ Filter" :callback="addFilter" />
@@ -31,6 +41,10 @@ import Filter_mod from "./filter_mod.vue";
 const samplers = ref<Sampler[]>([]);
 
 const fx = ref<(Echo | Filter)[]>([]);
+
+const remove_fx = (id: number) => {
+  fx.value = fx.value.filter((e) => e.id !== id);
+};
 
 const addSampler = async () => {
   const synth_api = await use_synth_api();

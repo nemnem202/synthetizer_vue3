@@ -3,22 +3,33 @@
     <InputKnob :value="props.frequency" :callback="update_frequency" label="Frequency" />
     <InputKnob :value="props.q" :callback="update_q" label="Q" />
     <InputKnob :value="props.gain" :callback="update_gain" label="Gain" />
+    <Default_button name="Delete" :callback="deletefx" />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { FilterParams } from "~/sound/synth_api_service";
 import type { Filter } from "~/types/filter";
 
-const props = defineProps<Filter>();
+const props = defineProps<Filter & { on_delete: () => void }>();
 
-const update_frequency = (val: number) => {
-  console.log("new frequency:", val);
+const deletefx = async () => {
+  const synth_api = await use_synth_api();
+  await synth_api.remove_fx(props.id);
+  props.on_delete();
 };
-const update_q = (val: number) => {
-  console.log("new q:", val);
+
+const update_frequency = async (val: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.edit_fx(props.id, FilterParams.FREQUENCY, val);
 };
-const update_gain = (val: number) => {
-  console.log("new gain:", val);
+const update_q = async (val: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.edit_fx(props.id, FilterParams.Q, val);
+};
+const update_gain = async (val: number) => {
+  const synth_api = await use_synth_api();
+  synth_api.edit_fx(props.id, FilterParams.GAIN, val);
 };
 </script>
 
