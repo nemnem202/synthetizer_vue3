@@ -19,6 +19,7 @@
 </template>
 
 <script lang="ts" setup>
+const props = defineProps<{ id: number }>();
 const file_input = ref<HTMLInputElement | null>(null);
 
 const points = ref<number[]>(Array.from({ length: 5000 }, () => 0));
@@ -31,6 +32,8 @@ const handleinput = async (e: Event) => {
   if (!target.files) return;
   const file = target.files[0];
   if (!file) return;
+  const synth_api = await use_synth_api();
+  synth_api.import_sample(target.files, false, props.id);
   const array_buffer = await file.arrayBuffer();
   const audio_ctx = new AudioContext();
   const audio_buffer = await audio_ctx.decodeAudioData(array_buffer);
@@ -41,7 +44,6 @@ const handleinput = async (e: Event) => {
   }
   if (channels[0]) {
     points.value = sincInterpolation(Array.from(channels[0]));
-    console.log(points.value);
   } else {
     points.value = []; // fallback si aucun canal
   }

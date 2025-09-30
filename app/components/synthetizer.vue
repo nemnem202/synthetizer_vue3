@@ -19,8 +19,12 @@ import type { Sampler } from "~/types/sampler";
 
 const samplers = ref<Sampler[]>([]);
 
-const addSampler = () => {
-  samplers.value.push(default_sampler_config);
+const addSampler = async () => {
+  const synth_api = await use_synth_api();
+  const id = synth_api.create_sampler();
+  const config = default_sampler_config;
+  config.id = id;
+  samplers.value.push(config);
 };
 
 const addEcho = () => {};

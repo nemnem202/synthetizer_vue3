@@ -1,6 +1,6 @@
 <template>
   <div class="sampler-container">
-    <SamplerCanvasVue />
+    <SamplerCanvasVue :id="config.id" />
     <div class="controls-container">
       <div class="gain-pan-container">
         <InputKnob :value="props.config.gain" :callback="updateGain" label="Gain" />
