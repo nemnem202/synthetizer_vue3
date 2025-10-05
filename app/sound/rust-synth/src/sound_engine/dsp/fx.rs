@@ -181,14 +181,15 @@ impl BiquadFilter {
             _ => BiquadCoeffs::calc_coeffs_for_bell(frequency, q, gain),
         };
 
-        console::log_1(
-            &format!(
-                "la valeur de q a t'elle changé ? {} nouvelle valeur: {}",
-                self.q != q,
-                q
-            )
-            .into(),
-        );
+        if self.q != q {
+            console::log_1(&format!("nouveau q: {}", q).into())
+        } else if self.frequency != frequency {
+            console::log_1(&format!("nouvelle frequence: {}", frequency).into())
+        } else if self.filter_type != filter_type {
+            console::log_1(&format!("nouveau type: {}", filter_type).into())
+        } else if self.gain != gain {
+            console::log_1(&format!("nouveau gain: {}", gain).into())
+        }
 
         self.frequency = frequency;
         self.q = q;

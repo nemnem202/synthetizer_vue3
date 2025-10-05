@@ -69,15 +69,16 @@ const addSampler = async () => {
 const addEcho = async () => {
   const synth_api = await use_synth_api();
   const id = synth_api.add_fx(Effects.ECHO);
-  const config = default_echo_config;
+  const config = { ...default_echo_config };
   config.id = id;
+  console.log("nouvel echo avec l'id" + id);
   fx.value.push(config);
 };
 
 const addFilter = async () => {
   const synth_api = await use_synth_api();
   const id = synth_api.add_fx(Effects.FILTER);
-  const config = default_filter_config;
+  const config = { ...default_filter_config };
   config.id = id;
   fx.value.push(config);
 };

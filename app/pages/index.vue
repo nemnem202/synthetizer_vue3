@@ -1,6 +1,6 @@
 <template>
   <div class="synth-presentation-page">
-    <h1>Projet : Synthétiseur Rust / WebAssembly Ultra-Performance</h1>
+    <h1>Projet : Synthétiseur Rust / WebAssembly</h1>
     
     <p>
       Découvrez mon projet de <strong>synthétiseur</strong> développé en <strong>Rust</strong> et compilé en <strong>WebAssembly</strong> pour des performances ultra-hautes et un contrôle <em>low-level</em>. Un projet unique : rien de comparable n'a vraiment été fait auparavant !
@@ -29,14 +29,13 @@
       <a href="https://github.com/nemnem202" target="_blank">mon GitHub</a>.
     </p>
 
-    <NuxtLink to="/synthpage" class="start-button">Commencer</NuxtLink>
+    <DefaultButton :callback="redirect" name="Commencer" :size="30" />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 
-export default defineComponent({});
+const redirect = ()=> {window.location.href = "/synthpage"}
 </script>
 
 <style scoped>

@@ -1,5 +1,6 @@
 import type { noteDTO } from "~/types/note";
 import { AudioEngineOrchestrator } from "./audio_engine_orchestrator";
+import type { SampleDataWithChannels } from "~/types/sampler";
 
 const MIDI_EVENT_SIZE = 4;
 const MIDI_QUEUE_CAPACITY = 64;
@@ -343,7 +344,7 @@ export class SynthApi {
     file: File | null | undefined,
     hq: boolean,
     sampler_id: number
-  ): Promise<SampleData[] | void> {
+  ): Promise<SampleDataWithChannels | void> {
     if (!file) return;
     if (file.type !== "audio/wav") {
       console.log("invalid format for ", file.name);
@@ -382,20 +383,18 @@ export class SynthApi {
         console.warn("Sample trop long pour être inséré dans le buffer !");
         return;
       }
-      // Création d'un Float32Array sur le buffer partagé
       const buffer_view = new Float32Array(SynthApi.sample_buffer, 0, total_length);
 
-      // Écriture des channels dans le buffer
       buffer_view.set(channels[0], 0);
       if (channels.length >= 2) {
         buffer_view.set(channels[1], channels[0].length);
       }
 
       const new_sample_id = this.get_new_sample_id();
-      // Notifier l'événement
+
       SynthApi.notify_sample_event({
         sampler_id: sampler_id,
-        sample_id: new_sample_id, // tu peux incrémenter si tu veux gérer plusieurs samples
+        sample_id: new_sample_id,
         length: total_length,
         channels: channels.length,
         hq: 0,
@@ -409,9 +408,12 @@ export class SynthApi {
       };
 
       this.loaded_samples.push(new_sample);
-    }
 
-    return this.loaded_samples;
+      return {
+        ...new_sample,
+        channels: channels.length >= 2 ? [channels[0], channels[1]] : [channels[0]],
+      };
+    }
   }
 
   public async set_existing_sample(id: number, sampler_id: number) {
