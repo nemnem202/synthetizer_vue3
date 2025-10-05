@@ -87,7 +87,7 @@ function draw() {
 
   ctx.value.beginPath();
   ctx.value.strokeStyle = props.curve.color;
-  ctx.value.lineWidth = 2 / scale_y;
+  ctx.value.lineWidth = 2 / scale_x;
 
   ctx.value.moveTo(0, props.curve.points[0] ? props.curve.points[0] * world_height : 0);
 
