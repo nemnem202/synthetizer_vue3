@@ -23,6 +23,8 @@ impl NoteManager {
         } else {
             self.notes
                 .push(Note::new(dto.value, dto.velocity, samplers));
+
+            console::log_1(&"nouvelle note !".into());
         }
     }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="sampler-container">
-    <SamplerCanvasVue :id="config.id" :loaded_samples="props.loadedSamples" />
+    <CanvasHandler :id="config.id" />
     <div class="controls-container">
       <div class="gain-pan-container">
         <InputKnob :value="props.config.gain" :callback="updateGain" label="Gain" />
@@ -20,12 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import { OscKey, type SampleData } from "~/sound/synth_api_service";
+import { OscKey } from "~/sound/synth_api_service";
 import type { Sampler } from "~/types/sampler";
 
 const props = defineProps<{
   config: Sampler;
-  loadedSamples: SampleData[];
 }>();
 
 const updateGain = async (value: number) => {

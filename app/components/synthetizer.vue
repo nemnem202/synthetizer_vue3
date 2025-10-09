@@ -2,13 +2,13 @@
   <div class="synth-container">
     <div class="samplers-container">
       <Sampler
-        v-for="(sampler, index) in samplers"
-        :key="'sampler' + sampler.id"
+        v-for="sampler in samplers"
+        :key="`sampler-${sampler.id}`"
         :config="sampler"
-        :loaded-samples="props.loadedSamples"
       />
-      <default-button name="+" :callback="addSampler" />
+      <default-button name="+" :callback="add_sampler" />
     </div>
+
     <div class="mixer-container">
       <div class="buttons-container">
         <div v-for="(effect, index) in fx" :key="effect.id ?? index" class="effect-item">
@@ -16,17 +16,18 @@
             v-if="is_echo(effect)"
             v-bind="effect"
             :on_delete="() => remove_fx(effect.id)"
-            :key="'echo' + effect.id"
+            :key="`echo-${effect.id}`"
           />
           <Filter_mod
             v-else-if="is_filter(effect)"
             v-bind="effect"
             :on_delete="() => remove_fx(effect.id)"
-            :key="'filt' + effect.id"
+            :key="`filter-${effect.id}`"
           />
         </div>
-        <default-button name="+ Echo" :callback="addEcho" />
-        <default-button name="+ Filter" :callback="addFilter" />
+
+        <default-button name="+ Echo" :callback="add_echo" />
+        <default-button name="+ Filter" :callback="add_filter" />
       </div>
     </div>
   </div>
@@ -47,7 +48,6 @@ const samplers = ref<Sampler[]>([]);
 
 const fx = ref<(Echo | Filter)[]>([]);
 
-const props = defineProps<{ loadedSamples: SampleData[] }>();
 
 const remove_fx = (id: number) => {
   fx.value = fx.value.filter((e) => e.id !== id);
@@ -58,7 +58,7 @@ onMounted(async () => {
   midi();
 });
 
-const addSampler = async () => {
+const add_sampler = async () => {
   const synth_api = await use_synth_api();
   const id = synth_api.create_sampler();
   const config = { ...default_sampler_config, id };
@@ -66,7 +66,7 @@ const addSampler = async () => {
   console.log("nouveau sampler avec la config ", config);
 };
 
-const addEcho = async () => {
+const add_echo = async () => {
   const synth_api = await use_synth_api();
   const id = synth_api.add_fx(Effects.ECHO);
   const config = { ...default_echo_config };
@@ -75,7 +75,7 @@ const addEcho = async () => {
   fx.value.push(config);
 };
 
-const addFilter = async () => {
+const add_filter = async () => {
   const synth_api = await use_synth_api();
   const id = synth_api.add_fx(Effects.FILTER);
   const config = { ...default_filter_config };
@@ -92,27 +92,26 @@ const is_filter = (effect: Echo | Filter): effect is Filter => {
 };
 </script>
 
+
 <style scoped>
 .synth-container {
   width: 1000px;
+  display: flex;
   justify-content: space-between;
   border: 1px solid white;
-}
-.synth-container,
-.samplers-container,
-.mixer-container {
-  display: flex;
-
   padding: 10px;
   gap: 10px;
 }
 
 .samplers-container,
 .mixer-container {
+  display: flex;
   flex-direction: column;
   max-height: 80vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   align-items: center;
+  padding: 10px;
+  gap: 10px;
 }
 
 .samplers-container {
